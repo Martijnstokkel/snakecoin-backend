@@ -10,12 +10,15 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+
 import org.springframework.web.bind.annotation.RestController;
 
 import nl.snakecoin.Snakecoin.domain.Account;
 import nl.snakecoin.Snakecoin.service.AccountService;
+import nl.snakecoin.Snakecoin.Tools.*;
 
 @RestController 
 @RequestMapping(
@@ -30,7 +33,9 @@ public class AccountEndpoint {
 	
 	@PostMapping
 	public ResponseEntity<Account> apiCreate(@RequestBody Account Account) {
+		Account.setWachtwoord(Hashww.SHA_512(Account.getWachtwoord(), Account.getGebruikersnaam()));
 		if (Account.getId() != 0) {
+			
 			return new ResponseEntity<> (HttpStatus.CONFLICT);
 		}
 		return new ResponseEntity<Account>(
@@ -38,6 +43,23 @@ public class AccountEndpoint {
 				HttpStatus.OK);
 	}
 	
+	@PutMapping
+	public ResponseEntity<Account> login(@RequestBody Account account) {
+		
+		account.setWachtwoord(Hashww.SHA_512(account.getWachtwoord(), account.getGebruikersnaam()));
+		System.out.println("werkt dit " + account.getWachtwoord());
+		Optional<Account> oAccount = accountService.findByGebruikersnaam(account.getGebruikersnaam());
+		System.out.println("werkt dit " + oAccount.get().getWachtwoord());
+		Account oldaccount = null;
+		if(oAccount.isPresent()  && oAccount.get().getWachtwoord().equals(account.getWachtwoord())) {
+			oldaccount = oAccount.get();
+		
+		}
+		else {
+			return new ResponseEntity<Account>(HttpStatus.NOT_FOUND);
+		}
+		return new ResponseEntity<Account>(oldaccount, HttpStatus.OK);
+	}
 	
 	@GetMapping 	// Retrieve
 	public ResponseEntity<Iterable<Account>> apiGetAll() {
@@ -45,6 +67,8 @@ public class AccountEndpoint {
 				accountService.findAll(), 
 				HttpStatus.OK);
 	}
+
+
 
 	@GetMapping (path ="{id}")
 	public ResponseEntity<Optional<Account>> apiGetById(
@@ -56,8 +80,12 @@ public class AccountEndpoint {
 					? HttpStatus.OK 
 					: HttpStatus.NOT_FOUND);
 	}
+	
+	
+	
 	@DeleteMapping(path="{id}") 	// Delete
 	public ResponseEntity<Account> apiDeleteById(@PathVariable("id") long id) {
+		
 		if (!accountService.findById(id).isPresent()) {
 			return ResponseEntity.notFound().build();
 		} else {

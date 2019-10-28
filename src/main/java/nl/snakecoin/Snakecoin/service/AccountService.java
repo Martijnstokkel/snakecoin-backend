@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import nl.snakecoin.Snakecoin.repository.AccountRepository;
+
 import nl.snakecoin.Snakecoin.domain.Account;
 
 
@@ -29,6 +30,12 @@ public class AccountService {
 	}
 	public Optional<Account> findById(long id) {
 		return AccountRepository.findById(id);
+	}
+	public Optional<Account> findByGebruikersnaam(String gebruikersnaam){
+		return AccountRepository.findByGebruikersnaam(gebruikersnaam);
+	}
+	public Optional<Account> deleteByGebruikersnaam(String gebruikersnaam){
+		return AccountRepository.deleteByGebruikersnaam(gebruikersnaam);
 	}
 	
 }
