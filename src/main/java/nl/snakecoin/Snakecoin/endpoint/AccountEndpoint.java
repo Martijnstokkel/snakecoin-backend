@@ -34,7 +34,10 @@ public class AccountEndpoint {
 	@PostMapping
 	public ResponseEntity<Account> apiCreate(@RequestBody Account Account) {
 		Account.setWachtwoord(Hashww.SHA_512(Account.getWachtwoord(), Account.getGebruikersnaam()));
-		if (Account.getId() != 0) {
+		if(Account.getGebruikersnaam().length() < 7 || Account.getGebruikersnaam().length() > 15) {
+			return new ResponseEntity<>(HttpStatus.LENGTH_REQUIRED);
+		}
+		else if (Account.getId() != 0) {
 			
 			return new ResponseEntity<> (HttpStatus.CONFLICT);
 		}
@@ -81,16 +84,33 @@ public class AccountEndpoint {
 					: HttpStatus.NOT_FOUND);
 	}
 	
+	@PutMapping(path ="{gebruikersnaam}")
+	public ResponseEntity<Account> delete(@RequestBody Account account){
+		System.out.println(account.getGebruikersnaam());
+		account.setWachtwoord(Hashww.SHA_512(account.getWachtwoord(), account.getGebruikersnaam()));
+		System.out.println("werkt dit " + account.getWachtwoord());
+		Optional<Account> oAccount = accountService.findByGebruikersnaam(account.getGebruikersnaam());
+		System.out.println("werkt dit " + oAccount.get().getWachtwoord());
 	
-	
-	@DeleteMapping(path="{id}") 	// Delete
-	public ResponseEntity<Account> apiDeleteById(@PathVariable("id") long id) {
-		
-		if (!accountService.findById(id).isPresent()) {
-			return ResponseEntity.notFound().build();
-		} else {
-			accountService.deleteById(id);
+		if(oAccount.isPresent()  && oAccount.get().getWachtwoord().equals(account.getWachtwoord())) {
+			accountService.deleteById(oAccount.get().getId());
+			System.out.println(account.getGebruikersnaam());
 			return new ResponseEntity<>(HttpStatus.OK);
+		}else {
+		System.out.println(account.getGebruikersnaam());
+		return new ResponseEntity<Account>(HttpStatus.NOT_FOUND);
+		
 		}
 	}
+	
+//	@DeleteMapping(path="{id}") 	// Delete
+//	public ResponseEntity<Account> apiDeleteById(@PathVariable("id") long id) {
+//		
+//		if (!accountService.findById(id).isPresent()) {
+//			return ResponseEntity.notFound().build();
+//		} else {
+//			accountService.deleteById(id);
+//			return new ResponseEntity<>(HttpStatus.OK);
+//		}
+//	}
 }

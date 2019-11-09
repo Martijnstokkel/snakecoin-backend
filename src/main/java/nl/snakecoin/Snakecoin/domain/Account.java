@@ -24,7 +24,7 @@ public class Account {
 	@Column(unique=true)
 	private String gebruikersnaam;
 	private String emailadres;
-
+	
 
 	public Account() {}
 	public Account(String voornaam,  String achternaam, String gebruikersnaam,String wachtwoord, String emailadres) {

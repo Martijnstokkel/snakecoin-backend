@@ -23,5 +23,8 @@ public class HighscoreService {
 		return highscoreRepository.findAll();
 	}
 
+	public Iterable<Highscore> findByGebruikersnaam(String gebruikersnaam){
+		return highscoreRepository.findByGebruikersnaam(gebruikersnaam);
+	}
 
 }

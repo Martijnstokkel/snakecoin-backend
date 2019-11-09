@@ -9,4 +9,5 @@ import nl.snakecoin.Snakecoin.domain.Highscore;
 @Repository
 public interface HighscoreRepository extends CrudRepository<Highscore, Long> {
 
+	Iterable<Highscore> findByGebruikersnaam(String gebruikersnaam);
 }

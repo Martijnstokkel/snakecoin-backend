@@ -6,6 +6,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+
 @Entity
 public class Highscore {
 	
@@ -14,11 +15,12 @@ public class Highscore {
 	private long id;
 	
 	private double highscore;
-	
+	private String gebruikersnaam;
 	public Highscore() {}
 	
-	public Highscore(double highscore) {
+	public Highscore(double highscore, String gebruikersnaam) {
 		this.highscore = highscore;
+		this.gebruikersnaam = gebruikersnaam;
 	}
 	
 	public double getHighscore() {
@@ -26,6 +28,14 @@ public class Highscore {
 	}
 	public void setHighscore(double highscore) {
 		this.highscore = highscore;
+	}
+
+	public String getGebruikersnaam() {
+		return gebruikersnaam;
+	}
+
+	public void setGebruikersnaam(String gebruikersnaam) {
+		this.gebruikersnaam = gebruikersnaam;
 	}
 
 	public long getId() {
