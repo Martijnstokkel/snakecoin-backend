@@ -20,6 +20,7 @@ import nl.snakecoin.Snakecoin.domain.Highscore;
 import nl.snakecoin.Snakecoin.service.AccountService;
 import nl.snakecoin.Snakecoin.service.HighscoreService;
 
+
 @RestController
 @RequestMapping(path = "highscore", produces = { MediaType.APPLICATION_JSON_VALUE, MediaType.TEXT_PLAIN_VALUE })
 public class HighscoreEndpoint {

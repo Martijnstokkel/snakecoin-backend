@@ -10,8 +10,10 @@
 	</parent>
 	<groupId>nl.snakecoin</groupId>
 	<artifactId>Snakecoin</artifactId>
+
 	<version>0.0.1-SNAPSHOT</version>
 	<name>Snakecoin</name>
+	<url>http://www.martijn-cv.nl</url>
 	<description>Demo project for Spring Boot</description>
 
 	<properties>
@@ -38,6 +40,11 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+		  <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-tomcat</artifactId>
+            <scope>provided</scope>
+        </dependency>
 	</dependencies>
 
 	<build>
@@ -45,7 +52,7 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
-			</plugin>
+				</plugin>
 		</plugins>
 	</build>
 
